@@ -8,9 +8,9 @@ import {
   Sparkles,
 } from "lucide-react";
 
-import { SectionCard } from "@/components/section-card";
-import { StatCard } from "@/components/stat-card";
-import { StatusBadge } from "@/components/status-badge";
+import { SectionCard } from "@/components/dashboard/section-card";
+import { StatCard } from "@/components/dashboard/stat-card";
+import { StatusBadge } from "@/components/ui/status-badge";
 
 const stats = [
   { title: "Applications", value: "1,284", trend: "+8.3% this week", icon: FileText, tone: "violet" as const },

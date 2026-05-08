@@ -1,4 +1,6 @@
 """Repository for Subject data access."""
+from __future__ import annotations
+
 from typing import Optional
 from uuid import UUID
 

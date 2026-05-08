@@ -20,6 +20,14 @@ class Settings(BaseSettings):
     refresh_token_expire_days: int = 7
     password_min_length: int = 8
 
+    # Razorpay Configuration
+    razorpay_key_id: str | None = None
+    razorpay_key_secret: str | None = None
+    razorpay_webhook_secret: str | None = None
+
+    # Frontend URLs
+    next_public_app_url: str = "http://localhost:3000"
+
     model_config = SettingsConfigDict(env_file=".env", case_sensitive=False, extra="ignore")
 
     @field_validator("backend_cors_origins", mode="before")

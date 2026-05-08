@@ -151,6 +151,11 @@ class Application(Base, UUIDPrimaryKeyMixin, TimestampMixin, SoftDeleteMixin):
         nullable=True,
     )
 
+    student_notes: Mapped[str | None] = mapped_column(
+        Text,
+        nullable=True,
+    )
+
     student: Mapped[StudentProfile] = relationship(
         "StudentProfile",
         back_populates="applications",

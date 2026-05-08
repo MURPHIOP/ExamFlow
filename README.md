@@ -1026,7 +1026,233 @@ The next major step is to build the **core examination setup APIs** for:
 
 ---
 
-# 👥 Company
+# � Testing Application Workflow
+
+## Prerequisites
+
+Ensure Docker is running and PostgreSQL is started:
+
+```bash
+docker-compose up -d
+```
+
+## 1. Start Backend Server
+
+```bash
+cd apps/api
+uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+```
+
+Verify API is running:
+
+```bash
+curl http://localhost:8000/health
+```
+
+## 2. Seed Setup Data
+
+The database already has seed data created during migrations. Verify by checking exam sessions, subjects, etc.:
+
+```bash
+curl http://localhost:8000/api/v1/health
+```
+
+## 3. Login as Student
+
+```bash
+curl -X POST http://localhost:8000/api/v1/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{
+    "identifier": "shreyan.test@example.com",
+    "password": "Password@123"
+  }'
+```
+
+Response:
+```json
+{
+  "success": true,
+  "message": "Login successful",
+  "data": {
+    "access_token": "eyJ...",
+    "user": {
+      "id": "uuid",
+      "full_name": "Test Student",
+      "role": "student"
+    }
+  }
+}
+```
+
+Save the `access_token`.
+
+## 4. Create Application (Student)
+
+```bash
+curl -X POST http://localhost:8000/api/v1/applications/student \
+  -H "Authorization: Bearer YOUR_STUDENT_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "exam_session_id": "SESSION_UUID",
+    "subject_id": "SUBJECT_UUID",
+    "grade_level_id": "GRADE_UUID",
+    "preferred_centre_id": "CENTRE_UUID"
+  }'
+```
+
+Response:
+```json
+{
+  "success": true,
+  "message": "Application draft created successfully",
+  "data": {
+    "id": "app-uuid",
+    "application_number": "MBT-BSP-2026-000001",
+    "status": "draft",
+    "fee_amount": "500.00"
+  }
+}
+```
+
+## 5. List My Applications (Student)
+
+```bash
+curl -X GET http://localhost:8000/api/v1/applications/my \
+  -H "Authorization: Bearer YOUR_STUDENT_TOKEN"
+```
+
+## 6. Submit Application (Student)
+
+```bash
+curl -X POST http://localhost:8000/api/v1/applications/my/APP_UUID/submit \
+  -H "Authorization: Bearer YOUR_STUDENT_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "confirmation": true,
+    "declaration_accepted": true
+  }'
+```
+
+Response:
+```json
+{
+  "success": true,
+  "message": "Application submitted successfully",
+  "data": {
+    "status": "payment_pending",
+    "application_number": "MBT-BSP-2026-000001"
+  }
+}
+```
+
+## 7. Login as Institution
+
+```bash
+curl -X POST http://localhost:8000/api/v1/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{
+    "identifier": "institution@test.com",
+    "password": "Password@123"
+  }'
+```
+
+## 8. Create Application for Student (Institution)
+
+```bash
+curl -X POST http://localhost:8000/api/v1/applications/institution \
+  -H "Authorization: Bearer INSTITUTION_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "student_user_id": "STUDENT_UUID",
+    "exam_session_id": "SESSION_UUID",
+    "subject_id": "SUBJECT_UUID",
+    "grade_level_id": "GRADE_UUID"
+  }'
+```
+
+## 9. Login as Admin
+
+```bash
+curl -X POST http://localhost:8000/api/v1/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{
+    "identifier": "admin@test.com",
+    "password": "Password@123"
+  }'
+```
+
+## 10. List All Applications (Admin)
+
+```bash
+curl -X GET "http://localhost:8000/api/v1/applications/admin?page=1&page_size=20&status=payment_pending" \
+  -H "Authorization: Bearer ADMIN_TOKEN"
+```
+
+## 11. Mark Application Under Verification (Admin)
+
+```bash
+curl -X POST http://localhost:8000/api/v1/applications/admin/APP_UUID/mark-under-verification \
+  -H "Authorization: Bearer ADMIN_TOKEN"
+```
+
+## 12. Request Correction (Admin)
+
+```bash
+curl -X POST http://localhost:8000/api/v1/applications/admin/APP_UUID/request-correction \
+  -H "Authorization: Bearer ADMIN_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "correction_notes": "Please correct student name spelling"
+  }'
+```
+
+## 13. Approve Application (Admin)
+
+```bash
+curl -X POST http://localhost:8000/api/v1/applications/admin/APP_UUID/approve \
+  -H "Authorization: Bearer ADMIN_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "admin_remarks": "Application approved successfully"
+  }'
+```
+
+## 14. Reject Application (Admin)
+
+```bash
+curl -X POST http://localhost:8000/api/v1/applications/admin/APP_UUID/reject \
+  -H "Authorization: Bearer ADMIN_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "rejection_reason": "Incomplete documents submitted"
+  }'
+```
+
+## 15. Add Document Metadata
+
+```bash
+curl -X POST http://localhost:8000/api/v1/applications/APP_UUID/documents \
+  -H "Authorization: Bearer TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "document_type": "ID_PROOF",
+    "file_name": "student_id.pdf",
+    "file_url": "s3://bucket/path/to/file.pdf",
+    "mime_type": "application/pdf",
+    "file_size_bytes": 102400
+  }'
+```
+
+## 16. Run Tests
+
+```bash
+cd apps/api
+pytest app/tests/test_applications.py -v
+```
+
+---
+
+# �👥 Company
 
 <p align="center">
   <img src="https://img.shields.io/badge/M.B.%20Technosoft%20Pvt%20Ltd-ExamFlow%20Platform-00F5A0?style=for-the-badge&logo=googlecloud&logoColor=black" />
@@ -1051,4 +1277,211 @@ It helps institutions reduce manual effort, helps administrators work faster, he
 <p align="center">
   <img src="https://capsule-render.vercel.app/api?type=waving&color=0:00F5A0,50:003B46,100:0B0F1A&height=150&section=footer" />
 </p>
+
+
+---
+
+# 💳 Razorpay Payment Workflow
+
+## Payment Flow
+
+### 1. Student/Institution Creates Payment Order
+```bash
+curl -X POST http://localhost:8000/api/v1/payments/create-order \
+  -H "Authorization: Bearer STUDENT_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "application_id": "app-uuid"
+  }'
+```
+
+Response:
+```json
+{
+  "success": true,
+  "message": "Payment order created successfully",
+  "data": {
+    "payment_id": "payment-uuid",
+    "application_id": "app-uuid",
+    "application_number": "MBT-BSP-2026-000001",
+    "razorpay_order_id": "order_xxxxx",
+    "amount": "500.00",
+    "amount_paise": 50000,
+    "currency": "INR",
+    "status": "initiated",
+    "key_id": "rzp_test_xxxxx",
+    "checkout_prefill": {
+      "name": "Student Name",
+      "email": "student@example.com",
+      "contact": "9876543210"
+    }
+  }
+}
+```
+
+### 2. Frontend Uses Razorpay Checkout
+
+The frontend receives `key_id`, `razorpay_order_id`, `amount_paise`, and prefill data, then initializes Razorpay checkout.
+
+### 3. Student/Institution Verifies Payment
+
+After successful checkout, frontend sends:
+```bash
+curl -X POST http://localhost:8000/api/v1/payments/verify \
+  -H "Authorization: Bearer STUDENT_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "application_id": "app-uuid",
+    "razorpay_order_id": "order_xxxxx",
+    "razorpay_payment_id": "pay_xxxxx",
+    "razorpay_signature": "signature_from_checkout"
+  }'
+```
+
+Response (on success):
+```json
+{
+  "success": true,
+  "message": "Payment verified successfully",
+  "data": {
+    "payment": {
+      "id": "payment-uuid",
+      "status": "success",
+      "amount": "500.00",
+      "receipt_number": "MBT-RCPT-2026-000001"
+    },
+    "application": {
+      "application_number": "MBT-BSP-2026-000001",
+      "status": "paid"
+    }
+  }
+}
+```
+
+### 4. Get Receipt Metadata
+
+```bash
+curl -X GET http://localhost:8000/api/v1/payments/{payment_id}/receipt \
+  -H "Authorization: Bearer STUDENT_TOKEN"
+```
+
+Response:
+```json
+{
+  "success": true,
+  "message": "Receipt retrieved successfully",
+  "data": {
+    "receipt_number": "MBT-RCPT-2026-000001",
+    "application_number": "MBT-BSP-2026-000001",
+    "student_name": "Student Name",
+    "student_email": "student@example.com",
+    "exam_session_name": "Session 2026",
+    "subject_name": "Vocal Music",
+    "grade_level_name": "Grade 1",
+    "amount": "500.00",
+    "currency": "INR",
+    "paid_at": "2026-05-08T12:00:00Z",
+    "payment_id": "payment-uuid",
+    "provider": "razorpay",
+    "provider_payment_id": "pay_xxxxx",
+    "status": "success"
+  }
+}
+```
+
+### 5. Admin Views Payments
+
+```bash
+curl -X GET "http://localhost:8000/api/v1/payments/admin?page=1&page_size=20&status=success" \
+  -H "Authorization: Bearer ADMIN_TOKEN"
+```
+
+### 6. Admin Marks Application for Verification
+
+After successful payment, admin moves application from `paid` to `under_verification`:
+
+```bash
+curl -X POST http://localhost:8000/api/v1/applications/admin/{application_id}/mark-under-verification \
+  -H "Authorization: Bearer ADMIN_TOKEN"
+```
+
+## Razorpay Webhook Integration
+
+ExamFlow listens to Razorpay webhooks at:
+```
+POST /api/v1/payments/webhook
+Header: X-Razorpay-Signature
+```
+
+Supported events:
+- `payment.captured` - Payment successfully captured
+- `payment.failed` - Payment failed
+- `order.paid` - Order marked as paid
+
+Webhooks are processed idempotently - duplicate events don't cause issues.
+
+## Payment Status Lifecycle
+
+```
+initiated -> pending -> success
+         \-> failed
+         \-> cancelled
+         \-> refunded
+```
+
+Application status after payment:
+```
+payment_pending -> (payment verified) -> paid -> (admin marks verification) -> under_verification
+```
+
+## Current Restrictions
+
+✅ **What's Implemented:**
+- Razorpay order creation
+- Payment signature verification
+- Webhook handling (idempotent)
+- Receipt number generation (MBT-RCPT-{YEAR}-{SEQUENCE})
+- Application status update to `paid`
+- Payment metadata storage
+- Admin payment viewing
+
+❌ **What's NOT Implemented Yet:**
+- Actual file upload for receipts
+- Receipt PDF generation
+- Email receipts to students
+- Refund processing
+- Manual offline payment mode
+- Payment retry logic
+- Partial payments
+- Subscription payments
+
+## Environment Variables
+
+Required in `.env`:
+```
+RAZORPAY_KEY_ID=rzp_test_xxxxx
+RAZORPAY_KEY_SECRET=your_secret_here
+RAZORPAY_WEBHOOK_SECRET=your_webhook_secret_here
+```
+
+## Testing
+
+All payment tests mock the Razorpay client - no actual API calls in tests:
+
+```bash
+cd apps/api
+pytest app/tests/test_payments.py -v
+```
+
+## Security Notes
+
+1. **Signature Verification**: Every payment is verified using HMAC SHA256
+2. **Webhook Verification**: Webhook signatures verified using RAZORPAY_WEBHOOK_SECRET
+3. **Amount Validation**: Payment amount verified against application fee from database
+4. **Ownership Verification**: Students can only pay for their own applications
+5. **Duplicate Prevention**: Prevents multiple successful payments for same application
+6. **Sensitive Data**: API keys never logged; only order/payment IDs logged
+7. **Transaction Safety**: Payment + application status update in single transaction
+
+---
 

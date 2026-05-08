@@ -1,5 +1,5 @@
-import { SectionCard } from "@/components/section-card";
-import { StatCard } from "@/components/stat-card";
+import { SectionCard } from "@/components/dashboard/section-card";
+import { StatCard } from "@/components/dashboard/stat-card";
 import { BookOpenText, FileText, ReceiptText } from "lucide-react";
 
 export default function StudentDashboardPage() {
