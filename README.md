@@ -1,203 +1,215 @@
-# ExamFlow by M.B. Technosoft Pvt Ltd
+<div align="center">
 
-ExamFlow is a full-scale examination automation platform for cultural, academic, art, and skill-based examination bodies such as Bangiya Sangeet Parishad.
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:0B0F1A,50:003B46,100:00F5A0&height=230&section=header&text=CivicLink&fontSize=65&fontColor=ffffff&animation=fadeIn&fontAlignY=38&desc=AI-Powered%20Civic%20Grievance%20Resolution&descAlignY=58&descSize=20" width="100%" />
 
-## Problem Statement
-Many examination organizations still rely on manual operations for form entry, verification, admit card preparation, marks entry, result publishing, and certificate generation. This causes delays, data-entry errors, and heavy administrative workload.
+[![Google Solution Challenge](https://img.shields.io/badge/Google_Solution_Challenge-2026-4285F4?style=for-the-badge&logo=google&logoColor=white)](#)
+[![AI for Social Good](https://img.shields.io/badge/AI_for_Social_Good-CivicTech-00F5A0?style=for-the-badge&logo=openai&logoColor=black)](#)
+[![Status](https://img.shields.io/badge/Status-Demo_Ready-success?style=for-the-badge)](#)
+[![License](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)](#)
 
-This repository contains the **monorepo foundation and base setup only**.
+<br/>
 
-## Company
-**M.B. Technosoft Pvt Ltd**
+![Next.js](https://img.shields.io/badge/Next.js-000000?style=flat-square&logo=next.js&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white)
+![LangGraph](https://img.shields.io/badge/LangGraph-AI_Orchestration-FF6B6B?style=flat-square)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=flat-square&logo=postgresql&logoColor=white)
+![Prisma](https://img.shields.io/badge/Prisma-2D3748?style=flat-square&logo=prisma&logoColor=white)
+![TailwindCSS](https://img.shields.io/badge/TailwindCSS-38B2AC?style=flat-square&logo=tailwindcss&logoColor=white)
 
-## Tech Stack
-- Frontend: Next.js (App Router), TypeScript, Tailwind CSS, next-themes, Framer Motion, Recharts, TanStack Query
-- Backend: FastAPI, Pydantic, SQLAlchemy 2.x, Alembic
-- Database: PostgreSQL
-- Tooling: npm workspaces, ESLint, Prettier, pytest, Docker Compose
+<br/>
 
-## Monorepo Structure
+<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&duration=2200&pause=900&color=00F5A0&center=true&vCenter=true&width=900&lines=Autonomous+AI+Complaint+Routing;Explainable+Step-by-Step+AI+Pipeline;Real-Time+Civic+Issue+Tracking;Built+for+Google+Solution+Challenge;Citizen+Voice+%E2%86%92+AI+Action+%E2%86%92+Authority+Resolution" />
 
-```text
-examflow-mbtechnosoft/
-├── apps/
-│   ├── web/
-│   └── api/
-├── packages/
-│   ├── shared/
-│   ├── ui/
-│   └── config/
-├── docs/
-├── infra/
-├── .env.example
-├── docker-compose.yml
-├── package.json
-└── README.md
+</div>
+
+---
+
+## 🌍 The Vision: Citizen Voice → AI Intelligence → Government Action
+
+**CivicLink** is a high-performance, AI-orchestrated civic infrastructure platform designed to eradicate the inefficiencies of public complaint handling. By converting chaotic, unstructured citizen grievances into structured, actionable civic tasks, CivicLink brings speed, transparency, and absolute accountability to urban governance.
+
+---
+
+## 🏆 United Nations SDGs Alignment
+
+CivicLink was engineered specifically to tackle global challenges outlined by the UN, making it a prime contender for the **Google Solution Challenge**.
+
+| 🏙️ **SDG 11: Sustainable Cities** | ⚖️ **SDG 16: Strong Institutions** | 🚀 **SDG 9: Innovation & Infrastructure** |
+| :--- | :--- | :--- |
+| Accelerates response times for critical urban infrastructure, sanitation, and public safety failures. | Eliminates bureaucratic black holes through transparent tracking and institutional accountability. | Modernizes outdated governmental workflows using scalable, cutting-edge AI software architecture. |
+
+---
+
+## 🛑 The Problem vs. 💡 The CivicLink Solution
+
+| The Broken Status Quo (Without CivicLink) | The Intelligent Future (With CivicLink) |
+| :--- | :--- |
+| ❌ **Black-Box Tracking:** Citizens submit complaints and never hear back. | ✅ **Total Transparency:** Live status tracking from submission to resolution. |
+| ❌ **Manual Routing:** Forms sit on desks waiting for human clerks to forward them. | ✅ **Autonomous Dispatch:** AI instantly routes the issue to the exact jurisdiction. |
+| ❌ **System Flooding:** Duplicate complaints and spam overwhelm authorities. | ✅ **Smart Verification:** AI filters spam and clusters duplicate reports automatically. |
+| ❌ **No Triage:** A broken streetlight is treated with the same urgency as a burst water main. | ✅ **Severity Scoring:** Critical infrastructure failures are flagged for immediate response. |
+
+---
+
+## 🧠 Core Innovation: Explainable AI Pipeline
+
+Most civic portals treat AI as a gimmick. CivicLink treats it as an **Explainable Workflow**. We don't use a black-box model; every complaint moves through a highly visible, judge-friendly AI pipeline.
+
+```mermaid
+graph TD
+    A([Citizen Input]) -->|Raw Text/Image| B{Intake Node}
+    
+    subgraph AI Orchestration Layer
+    B --> C[📊 Classification]
+    C --> D[🛡️ Verification & Spam Check]
+    D --> E[⚠️ Severity Scoring]
+    E --> F[🔗 Duplicate Detection]
+    F --> G[📍 Jurisdiction Routing]
+    end
+    
+    G -->|Structured JSON| H((Authority Dispatch))
+    H --> I[Citizen Dashboard Live Update]
+    
+    style A fill:#00F5A0,stroke:#0B0F1A,stroke-width:2px,color:#0B0F1A
+    style H fill:#4285F4,stroke:#0B0F1A,stroke-width:2px,color:#fff
+
 ```
 
-## Local Setup
+### 🧩 Step-by-Step AI Processing
 
-### 1) Clone and configure env
+| Step | AI Node | Execution Logic |
+| --- | --- | --- |
+| **1** | `Intake` | Ingests and normalizes raw user text into structured data. |
+| **2** | `Classification` | Categorizes the issue (e.g., Roadway, Sanitation, Water Supply, Safety). |
+| **3** | `Verification` | Validates legitimacy; aggressively filters out spam or incomplete data. |
+| **4** | `Severity` | Assigns algorithmic priority (`LOW`, `MEDIUM`, `HIGH`, `CRITICAL`). |
+| **5** | `Deduplication` | Prevents database flooding by linking visually/textually identical reports. |
+| **6** | `Routing` | Maps the classified issue to the exact municipal department ID. |
+
+---
+
+## 🏗️ System Architecture & Tech Stack
+
+CivicLink utilizes a decoupled, modern full-stack architecture built for scale.
+
+* **Frontend (Next.js 14, TailwindCSS):** Delivers a highly responsive, accessible interface for both citizens (Portal) and authorities (Command Center).
+* **Backend (FastAPI, Python):** Powers the high-throughput REST API, handling secure request validation and AI model orchestration.
+* **Database (PostgreSQL via Prisma):** Maintains strict relational integrity for grievance histories, agency mapping, and audit logs.
+* **AI Engine (LangGraph/LLMs):** Orchestrates the multi-agent reasoning steps required for explainable complaint parsing.
+
+---
+
+## 🔥 Key Features
+
+### 👤 For Citizens: The Empowerment Portal
+
+* **Frictionless Submission:** Report an issue in under 30 seconds.
+* **Explainable Receipts:** Receive an AI-generated summary showing exactly how the system understood the complaint.
+* **Live Tracking:** Watch the ticket move from "Pending" to "Assigned" to "Resolved."
+
+### 🏛️ For Authorities: The Command Center
+
+* **Triage Dashboard:** Instantly view a heat-map of critical vs. low-priority issues.
+* **AI Decision Logs:** See *why* the AI assigned a specific severity score to a ticket.
+* **Analytics Overview:** Track department efficiency, resolution rates, and category spikes.
+
+---
+
+## 📡 API Reference
+
+Base URL: `http://localhost:8000/api/v1`
+
+| Method | Endpoint | Description |
+| --- | --- | --- |
+| `POST` | `/ingest` | Submit a raw complaint for AI pipeline processing. |
+| `GET` | `/grievances` | Fetch paginated, filtered complaints. |
+| `PATCH` | `/grievances/{id}/status` | Update resolution state (Authority only). |
+| `GET` | `/analytics` | Retrieve aggregate metrics for the dashboard. |
+| `GET` | `/health` | System diagnostics and AI endpoint status. |
+
+---
+
+## 🛠️ Local Setup & Deployment
+
+### 1. Clone the Repository
+
 ```bash
-cp .env.example .env
+git clone [https://github.com/YOUR_USERNAME/CivicLink.git](https://github.com/YOUR_USERNAME/CivicLink.git)
+cd CivicLink
+
 ```
 
-### 2) Install frontend dependencies
+### 2. Backend Environment (FastAPI)
+
 ```bash
-npm install
-```
-
-### 3) Run frontend (Next.js)
-```bash
-npm run dev:web
-```
-
-### 4) Setup backend Python environment
-macOS/Linux:
-```bash
-cd apps/api
-python3.11 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-cp ../../.env.example .env
-```
-
-Windows (PowerShell):
-```powershell
-cd apps/api
+cd backend
 python -m venv .venv
-.venv\Scripts\Activate.ps1
+source .venv/bin/activate  # On Windows use: .venv\Scripts\activate
 pip install -r requirements.txt
-Copy-Item ../../.env.example .env
+
+# Create your .env file
+echo "DATABASE_URL=your_postgresql_url" > .env
+echo "DEMO_MODE=true" >> .env
+
+# Run the server
+uvicorn main:app --reload
+
 ```
 
-### 5) Run PostgreSQL using Docker
-```bash
-docker compose up -d postgres
-```
-Optional pgAdmin:
-```bash
-docker compose --profile admin up -d pgadmin
-```
+*Backend running at: `http://localhost:8000` | Swagger Docs: `http://localhost:8000/docs*`
 
-### 6) Run Alembic migration (from apps/api)
-```bash
-alembic revision --autogenerate -m "initial database schema"
-alembic upgrade head
-```
-
-### 7) Seed development data (from apps/api)
-```bash
-python -m app.db.seed
-```
-
-This seeds:
-- **Super Admin**: `superadmin@mbtechnosoft.com` / `Admin@12345`
-- **Admin**: `admin@mbtechnosoft.com` / `Admin@12345`
-- **Examiner**: `examiner@mbtechnosoft.com` / `Admin@12345`
-- Exam subjects, sessions, centres, grade levels, and fees
-
-### 8) Run backend API (from apps/api)
-```bash
-uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
-```
-
-Access Swagger API docs: `http://localhost:8000/docs`
-
-### 9) Test authentication endpoints
-See [auth-curl-examples.md](docs/auth-curl-examples.md) for complete examples.
-
-Quick test:
+### 3. Frontend Environment (Next.js)
 
 ```bash
-# Register student
-curl -X POST "http://localhost:8000/api/v1/auth/register/student" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "full_name": "Test Student",
-    "email": "test@example.com",
-    "password": "Test@12345",
-    "confirm_password": "Test@12345"
-  }'
+cd ../frontend
+npm install
 
-# Login
-curl -X POST "http://localhost:8000/api/v1/auth/login" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "identifier": "test@example.com",
-    "password": "Test@12345"
-  }'
+# Create your .env file
+echo "NEXT_PUBLIC_API_BASE_URL=http://localhost:8000/api/v1" > .env.local
 
-# Get current user (use token from login response)
-curl -X GET "http://localhost:8000/api/v1/auth/me" \
-  -H "Authorization: Bearer <access_token>"
+# Boot the application
+npm run dev
 
-# Test admin-only route (will fail for student)
-curl -X GET "http://localhost:8000/api/v1/protected/admin-only" \
-  -H "Authorization: Bearer <access_token>"
 ```
 
-### 10) Run backend tests (from apps/api)
+*Frontend running at: `http://localhost:3000*`
+
+---
+
+## 🧪 Testing Protocol
+
+CivicLink is built with robust test coverage to ensure enterprise-grade reliability.
+
 ```bash
-pytest
+# Backend Testing
+cd backend
+pytest -v
+
+# Frontend Testing & Validation
+cd frontend
+npm run lint
+npm run build
+
+# Database Schema Validation
+npx prisma validate
+
 ```
 
-Current test coverage:
-- Password hashing and verification (24 tests)
-- JWT token creation and decoding
-- Schema validation for registration/login
-- User response schemas
-- Password change validation
+---
 
+## 🚀 The Future Roadmap
 
-## Current Completed Features
-- Monorepo structure with apps/packages/docs/infra
-- Next.js frontend base app with premium dashboard foundation UI
-- Light and dark mode with next-themes
-- Shared constants package
-- FastAPI backend base initialization and health endpoints (`/`, `/health`, `/api/v1/health`)
-- Global exception handling and env-based CORS setup
-- Complete SQLAlchemy database model foundation with 21 models, enums, relationships, indexes, UUID PKs, and soft-delete/timestamp mixins
-- Alembic setup with initial database schema migration verified (661 lines SQL generated)
-- Development seed script with hashed passwords for super admin, admin, and examiner users
-- Backend test coverage for health and database model metadata/imports (7 tests, all passing)
-- Basic Docker Compose for local PostgreSQL
-- **Authentication & Authorization Layer** ✅
-  - JWT-based authentication with HS256 algorithm
-  - Password hashing with PBKDF2-SHA256 (260,000 iterations) - cross-platform compatible
-  - Role-Based Access Control (RBAC) for 6 roles: super_admin, admin, examiner, student, institution, guardian
-  - Student registration endpoint with email/phone uniqueness validation
-  - Institution registration endpoint (creates pending approval status)
-  - Login endpoint (email or phone + password) with last_login tracking
-  - Get current user endpoint (`/auth/me`)
-  - Logout endpoint (stateless JWT MVP)
-  - Protected routes with role-based access (super-admin-only, admin-only, authenticated-only)
-  - Comprehensive auth test suite (24 unit tests covering schemas, JWT, password hashing)
-  - Audit logging for registration, login success/fail, password changes
-  - Transactional user + profile creation (Student/Institution) with rollback safety
-  - User repository and auth service layers following clean architecture
-  - Dependency injection for RBAC enforcement
-  - OpenAPI/Swagger documentation with auth routes
-- Architecture/security/deployment/docs updated for current backend status
+* [ ] **Multilingual Support:** Native language complaint parsing via LLMs.
+* [ ] **WhatsApp Integration:** Submit complaints directly via conversational bots.
+* [ ] **Geospatial Clustering:** Predictive mapping to identify failing infrastructure hot-spots before they break.
+* [ ] **Computer Vision:** Automated verification of pothole/trash severity via uploaded images.
 
-## Intentionally Not Implemented Yet
-- Payment gateway business flow (Razorpay order/verify/webhooks)
-- AI/ML business workflow execution logic
-- PDF generation pipelines (receipt/admit card/certificate)
-- Full dashboard APIs and production analytics endpoints
-- Password reset flow
-- Email verification flow
-- Token refresh endpoint (JWT refresh strategy deferred for MVP)
-- Server-side token blacklisting (stateless JWT MVP)
+---
 
-## Next Build Step
-Core exam setup APIs (exam sessions, subjects, grades, fees management endpoints).
+## 👥 The Engineering Team
 
-## Documentation
-
-### API Guides
-- [Authentication & Authorization API](docs/auth-api.md) - Complete JWT auth system documentation
-- [Authentication cURL Examples](docs/auth-curl-examples.md) - Ready-to-use curl commands for testing all auth endpoints
-
-### Deployment & Architecture
-See `docs/` directory for detailed system design, security plan, and technical specifications
+| Name | Role | Focus |
+| --- | --- | --- |
+| **Shreyan Mitra** | Project Lead / Full-Stack | Product Vision, Architecture, Presentation |
+| **Priyanshu Roy** | Backend / AI Architecture | API Design, LangGraph Orchestration |
+| **Mayank Sharma** | Frontend / UI Engineering | Next.js Components, User Experience |
