@@ -1,0 +1,24 @@
+{
+  "name": "examflow-mbtechnosoft",
+  "version": "0.1.0",
+  "private": true,
+  "description": "ExamFlow monorepo foundation by M.B. Technosoft Pvt Ltd",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:web": "npm run dev --workspace @examflow/web",
+    "build:web": "npm run build --workspace @examflow/web",
+    "lint:web": "npm run lint --workspace @examflow/web",
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md,css,yml,yaml}\"",
+    "check:format": "prettier --check \"**/*.{js,jsx,ts,tsx,json,md,css,yml,yaml}\""
+  },
+  "devDependencies": {
+    "prettier": "^3.3.3"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "npm": ">=10.0.0"
+  }
+}

@@ -1,0 +1,39 @@
+# Node
+node_modules/
+.npm/
+.pnpm-store/
+.next/
+**/.next/
+out/
+dist/
+coverage/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.venv/
+venv/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Editor / OS
+.DS_Store
+.vscode/*
+!.vscode/extensions.json
+.idea/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build artifacts
+apps/api/.mypy_cache/
+apps/api/htmlcov/

@@ -1,0 +1,56 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 228 45% 98%;
+  --foreground: 230 20% 14%;
+  --card: 0 0% 100%;
+  --card-foreground: 230 20% 14%;
+  --border: 230 28% 90%;
+  --input: 230 28% 90%;
+  --ring: 250 92% 62%;
+  --primary: 250 92% 62%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 228 40% 96%;
+  --secondary-foreground: 230 20% 20%;
+  --muted: 228 40% 95%;
+  --muted-foreground: 230 12% 44%;
+  --accent: 247 85% 97%;
+  --accent-foreground: 252 70% 35%;
+  --brand-soft: 252 95% 70%;
+  --brand-alt: 190 95% 65%;
+  --shadow: 252 35% 45%;
+}
+
+.dark {
+  --background: 228 22% 10%;
+  --foreground: 220 20% 94%;
+  --card: 228 22% 14%;
+  --card-foreground: 220 20% 94%;
+  --border: 228 16% 24%;
+  --input: 228 16% 24%;
+  --ring: 252 92% 70%;
+  --primary: 252 92% 70%;
+  --primary-foreground: 240 25% 10%;
+  --secondary: 228 17% 18%;
+  --secondary-foreground: 220 18% 90%;
+  --muted: 228 16% 17%;
+  --muted-foreground: 220 12% 70%;
+  --accent: 252 35% 22%;
+  --accent-foreground: 252 90% 86%;
+  --brand-soft: 255 95% 68%;
+  --brand-alt: 186 85% 62%;
+  --shadow: 252 30% 2%;
+}
+
+* {
+  @apply border-border;
+}
+
+body {
+  @apply bg-background text-foreground;
+  background-image:
+    radial-gradient(circle at 0% 0%, hsl(var(--brand-soft) / 0.12), transparent 30%),
+    radial-gradient(circle at 100% 0%, hsl(var(--brand-alt) / 0.08), transparent 35%);
+}
