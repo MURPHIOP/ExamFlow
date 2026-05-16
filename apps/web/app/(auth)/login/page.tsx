@@ -2,90 +2,109 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { apiClient } from "@/lib/api-client";
+import { Eye, EyeOff, Lock, Mail } from "lucide-react";
+import { AuthShell } from "@/components/shared/auth-shell";
+import { authApi, setAuthToken } from "@/lib/auth";
 
 export default function LoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
     setError("");
 
     try {
-      const response = await apiClient.post("/auth/login", { 
-        identifier: email, 
-        password 
-      });
-
+      const response = await authApi.login(email, password);
       const result = response.data;
+      const token = result?.data?.access_token || result?.access_token;
+      const role = (result?.data?.user?.role || result?.user?.role || "student").toLowerCase();
 
-      if (result.success && result.data?.access_token) {
-        // Save the real JWT token
-        localStorage.setItem("token", result.data.access_token);
-        
-        // Redirect based on role
-        const role = result.data.user?.role;
-        if (role === "STUDENT") router.push("/student");
-        else if (role === "ADMIN" || role === "SUPER_ADMIN") router.push("/admin");
-        else router.push("/dashboard");
+      if (!token) {
+        throw new Error("Login succeeded but no access token was returned.");
       }
-    } catch (err: any) {
-      setError(err.response?.data?.message || err.response?.data?.detail || "Login failed. Check your credentials.");
+
+      setAuthToken(token);
+      if (role === "student") router.push("/student");
+      else if (role === "institution") router.push("/institution");
+      else if (role === "super_admin") router.push("/super-admin");
+      else router.push("/admin");
+    } catch (error: unknown) {
+      if (typeof error === "object" && error !== null && "response" in error) {
+        const responseError = error as {
+          response?: { data?: { message?: string; detail?: string } };
+          message?: string;
+        };
+        setError(
+          responseError.response?.data?.message ||
+            responseError.response?.data?.detail ||
+            responseError.message ||
+            "Login failed."
+        );
+      } else if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError("Login failed.");
+      }
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <main className="flex min-h-screen items-center justify-center px-4 bg-background">
-      <section className="w-full max-w-md rounded-3xl border border-border/70 bg-card p-6 shadow-soft">
-        <h1 className="text-2xl font-semibold">Login</h1>
-        <p className="mt-1 text-sm text-muted-foreground">Sign in to your ExamFlow account.</p>
-        
-        {/* Error Banner */}
-        {error && (
-          <div className="mt-4 p-3 text-sm text-red-600 bg-red-50/50 border border-red-100 rounded-xl">
+    <AuthShell
+      title="Welcome back"
+      description="Sign in to manage applications, approvals, payments, and documents from a premium secure dashboard."
+    >
+      <form onSubmit={handleLogin} className="space-y-4">
+        {error ? (
+          <div className="rounded-2xl border border-danger/30 bg-danger/10 p-4 text-sm text-danger">
             {error}
           </div>
-        )}
+        ) : null}
 
-        <form onSubmit={handleLogin} className="mt-6 space-y-4">
-          <div>
-            <label className="mb-1 block text-sm font-medium">Email</label>
+        <label className="block space-y-2">
+          <span className="text-sm font-medium">Email</span>
+          <div className="flex items-center gap-3 rounded-2xl border border-border bg-background/60 px-4 py-3">
+            <Mail className="h-4 w-4 text-muted-foreground" />
             <input
               type="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              className="w-full rounded-xl border border-input bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+              onChange={(event) => setEmail(event.target.value)}
+              className="w-full border-0 bg-transparent p-0 outline-none ring-0"
               placeholder="name@example.com"
-            />
-          </div>
-          <div>
-            <label className="mb-1 block text-sm font-medium">Password</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
               required
-              className="w-full rounded-xl border border-input bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
-              placeholder="********"
             />
           </div>
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full rounded-xl bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-50 transition-colors"
-          >
-            {loading ? "Authenticating..." : "Continue"}
-          </button>
-        </form>
-      </section>
-    </main>
+        </label>
+
+        <label className="block space-y-2">
+          <span className="text-sm font-medium">Password</span>
+          <div className="flex items-center gap-3 rounded-2xl border border-border bg-background/60 px-4 py-3">
+            <Lock className="h-4 w-4 text-muted-foreground" />
+            <input
+              type={showPassword ? "text" : "password"}
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+              className="w-full border-0 bg-transparent p-0 outline-none ring-0"
+              placeholder="••••••••"
+              required
+            />
+            <button type="button" onClick={() => setShowPassword((current) => !current)} className="text-muted-foreground">
+              {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+            </button>
+          </div>
+        </label>
+
+        <button type="submit" className="premium-button w-full" disabled={loading}>
+          {loading ? "Signing in..." : "Continue to dashboard"}
+        </button>
+      </form>
+    </AuthShell>
   );
 }

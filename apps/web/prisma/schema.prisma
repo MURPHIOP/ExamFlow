@@ -1,0 +1,273 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  STUDENT
+  INSTITUTION
+  ADMIN
+  SUPER_ADMIN
+}
+
+enum ApplicationStatus {
+  DRAFT
+  SUBMITTED
+  VERIFICATION_PENDING
+  APPROVED
+  PAYMENT_PENDING
+  PAID
+  REJECTED
+}
+
+enum PaymentStatus {
+  INITIATED
+  PENDING
+  SUCCESS
+  FAILED
+  REFUNDED
+}
+
+enum DocumentType {
+  RECEIPT
+  ADMIT_CARD
+  CERTIFICATE
+}
+
+enum NotificationChannel {
+  IN_APP
+  EMAIL
+}
+
+enum NotificationStatus {
+  PENDING
+  SENT
+  FAILED
+}
+
+model User {
+  id           String    @id @default(uuid()) @db.Uuid
+  email        String    @unique
+  phone        String?   @unique
+  fullName     String
+  role         UserRole
+  isActive     Boolean   @default(true)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  studentProfile StudentProfile?
+  institution  Institution?
+  applications Application[]
+  payments     Payment[]
+  notifications Notification[]
+  auditLogs    AuditLog[]
+}
+
+model StudentProfile {
+  id          String   @id @default(uuid()) @db.Uuid
+  userId      String   @unique @db.Uuid
+  dateOfBirth DateTime?
+  gender      String?
+  address     String?
+  pincode     String?
+  user        User     @relation(fields: [userId], references: [id])
+}
+
+model Institution {
+  id             String   @id @default(uuid()) @db.Uuid
+  userId         String   @unique @db.Uuid
+  institutionName String
+  address        String?
+  district       String?
+  state          String?
+  pincode        String?
+  user           User     @relation(fields: [userId], references: [id])
+}
+
+model ExamSession {
+  id         String      @id @default(uuid()) @db.Uuid
+  name       String
+  year       Int
+  isActive   Boolean     @default(true)
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  applications Application[]
+  examFees   ExamFee[]   @relation("ExamFeeSession")
+}
+
+model Subject {
+  id           String      @id @default(uuid()) @db.Uuid
+  name         String
+  code         String      @unique
+  isActive     Boolean     @default(true)
+  applications Application[]
+  examFees     ExamFee[]   @relation("ExamFeeSubject")
+}
+
+model GradeLevel {
+  id           String      @id @default(uuid()) @db.Uuid
+  name         String
+  code         String      @unique
+  isActive     Boolean     @default(true)
+  applications Application[]
+  examFees     ExamFee[]   @relation("ExamFeeGradeLevel")
+}
+
+model ExamFee {
+  id            String       @id @default(uuid()) @db.Uuid
+  examSessionId  String?      @db.Uuid
+  subjectId      String?      @db.Uuid
+  gradeLevelId   String?      @db.Uuid
+  amount         Decimal      @db.Decimal(10, 2)
+  examSession    ExamSession? @relation("ExamFeeSession", fields: [examSessionId], references: [id])
+  subject        Subject?     @relation("ExamFeeSubject", fields: [subjectId], references: [id])
+  gradeLevel     GradeLevel?  @relation("ExamFeeGradeLevel", fields: [gradeLevelId], references: [id])
+}
+
+model ExamCentre {
+  id           String   @id @default(uuid()) @db.Uuid
+  name         String
+  code         String   @unique
+  capacity     Int      @default(0)
+  address      String?
+  district     String?
+  state        String?
+  pincode      String?
+  allocations  CentreAllocation[]
+}
+
+model Application {
+  id                String             @id @default(uuid()) @db.Uuid
+  applicationNumber  String             @unique
+  userId             String             @db.Uuid
+  examSessionId      String             @db.Uuid
+  subjectId          String             @db.Uuid
+  gradeLevelId       String             @db.Uuid
+  status             ApplicationStatus  @default(DRAFT)
+  feeAmount          Decimal            @db.Decimal(10, 2)
+  user               User               @relation(fields: [userId], references: [id])
+  examSession        ExamSession        @relation(fields: [examSessionId], references: [id])
+  subject            Subject            @relation(fields: [subjectId], references: [id])
+  gradeLevel         GradeLevel         @relation(fields: [gradeLevelId], references: [id])
+  payments           Payment[]
+  documents          Document[]
+  admitCard          AdmitCard?         @relation("ApplicationAdmitCard")
+  result             Result?            @relation("ApplicationResult")
+  certificate        Certificate?       @relation("ApplicationCertificate")
+}
+
+model Payment {
+  id                 String        @id @default(uuid()) @db.Uuid
+  applicationId      String        @db.Uuid
+  userId             String        @db.Uuid
+  status             PaymentStatus  @default(INITIATED)
+  amount             Decimal       @db.Decimal(10, 2)
+  providerOrderId    String?       @unique
+  providerPaymentId  String?       @unique
+  providerSignature  String?
+  receiptNumber      String?       @unique
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+  application       Application    @relation(fields: [applicationId], references: [id])
+  user              User           @relation(fields: [userId], references: [id])
+  documents         Document[]
+}
+
+model Document {
+  id            String        @id @default(uuid()) @db.Uuid
+  applicationId String?       @db.Uuid
+  paymentId     String?       @db.Uuid
+  type          DocumentType
+  fileName      String?
+  fileUrl       String?
+  qrCode        String?       @unique
+  revokedAt     DateTime?
+  application   Application?  @relation(fields: [applicationId], references: [id])
+  payment       Payment?      @relation(fields: [paymentId], references: [id])
+}
+
+model CentreAllocation {
+  id           String   @id @default(uuid()) @db.Uuid
+  examCentreId String   @db.Uuid
+  applicationId String  @unique @db.Uuid
+  rollNumber   String   @unique
+  examCentre   ExamCentre @relation(fields: [examCentreId], references: [id])
+}
+
+model AdmitCard {
+  id            String       @id @default(uuid()) @db.Uuid
+  applicationId String       @unique @db.Uuid
+  application   Application  @relation("ApplicationAdmitCard", fields: [applicationId], references: [id])
+}
+
+model MarksEntry {
+  id            String   @id @default(uuid()) @db.Uuid
+  applicationId String   @unique @db.Uuid
+  marks         Decimal  @db.Decimal(10, 2)
+}
+
+model Result {
+  id            String       @id @default(uuid()) @db.Uuid
+  applicationId String       @unique @db.Uuid
+  grade         String?
+  publishedAt   DateTime?
+  application   Application  @relation("ApplicationResult", fields: [applicationId], references: [id])
+}
+
+model Certificate {
+  id                String       @id @default(uuid()) @db.Uuid
+  applicationId     String       @unique @db.Uuid
+  certificateNumber String       @unique
+  qrCode            String?      @unique
+  revokedAt         DateTime?
+  application       Application  @relation("ApplicationCertificate", fields: [applicationId], references: [id])
+}
+
+model Notification {
+  id        String              @id @default(uuid()) @db.Uuid
+  userId    String              @db.Uuid
+  channel   NotificationChannel @default(IN_APP)
+  status    NotificationStatus  @default(PENDING)
+  title     String
+  body      String
+  createdAt DateTime            @default(now())
+  user      User                @relation(fields: [userId], references: [id])
+}
+
+model SupportRequest {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String?  @db.Uuid
+  subject   String
+  message   String
+  status    String   @default("OPEN")
+  createdAt DateTime @default(now())
+}
+
+model AuditLog {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String?  @db.Uuid
+  action    String
+  entity    String
+  metadata  Json?
+  createdAt DateTime @default(now())
+  user      User?    @relation(fields: [userId], references: [id])
+}
+
+model AIJob {
+  id        String   @id @default(uuid()) @db.Uuid
+  jobType   String
+  status    String   @default("PENDING")
+  payload   Json?
+  createdAt DateTime @default(now())
+}
+
+model AIReviewItem {
+  id        String   @id @default(uuid()) @db.Uuid
+  jobId     String?  @db.Uuid
+  title     String
+  details   String?
+  status    String   @default("PENDING")
+}

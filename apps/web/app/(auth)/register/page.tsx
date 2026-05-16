@@ -1,36 +1,22 @@
+import Link from "next/link";
+import { AuthShell } from "@/components/shared/auth-shell";
+
 export default function RegisterPage() {
   return (
-    <main className="flex min-h-screen items-center justify-center px-4">
-      <section className="w-full max-w-md rounded-3xl border border-border/70 bg-card p-6 shadow-soft">
-        <h1 className="text-2xl font-semibold">Register</h1>
-        <p className="mt-1 text-sm text-muted-foreground">
-          Foundation page only. Registration workflow will be added in a dedicated auth module step.
-        </p>
-        <form className="mt-6 space-y-4">
-          <div>
-            <label className="mb-1 block text-sm font-medium">Full Name</label>
-            <input
-              type="text"
-              className="w-full rounded-xl border border-input bg-background px-3 py-2 text-sm"
-              placeholder="Your name"
-            />
-          </div>
-          <div>
-            <label className="mb-1 block text-sm font-medium">Email</label>
-            <input
-              type="email"
-              className="w-full rounded-xl border border-input bg-background px-3 py-2 text-sm"
-              placeholder="name@example.com"
-            />
-          </div>
-          <button
-            type="button"
-            className="w-full rounded-xl bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground"
-          >
-            Create Account
-          </button>
-        </form>
-      </section>
-    </main>
+    <AuthShell
+      title="Create your ExamFlow account"
+      description="Choose the correct registration path to continue as a student or institution."
+    >
+      <div className="grid gap-4 sm:grid-cols-2">
+        <Link href="/register/student" className="glow-card p-6 transition-transform hover:-translate-y-1">
+          <p className="text-lg font-semibold">Student registration</p>
+          <p className="mt-2 text-sm text-muted-foreground">Apply for exams, pay fees, and track documents.</p>
+        </Link>
+        <Link href="/register/institution" className="glow-card p-6 transition-transform hover:-translate-y-1">
+          <p className="text-lg font-semibold">Institution registration</p>
+          <p className="mt-2 text-sm text-muted-foreground">Submit candidates in bulk and manage applications.</p>
+        </Link>
+      </div>
+    </AuthShell>
   );
 }

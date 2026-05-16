@@ -12,6 +12,7 @@ class Settings(BaseSettings):
     api_port: int = 8000
     backend_cors_origins: list[str] | str = ["http://localhost:3000"]
     database_url: str = "postgresql+psycopg://postgres:postgres@localhost:5432/examflow"
+    direct_database_url: str | None = None
 
     # JWT Configuration
     jwt_secret_key: str = "change-this-secret-in-production"

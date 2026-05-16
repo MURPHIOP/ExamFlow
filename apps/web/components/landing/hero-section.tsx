@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight, PlayCircle } from "lucide-react";
-import { MotionWrapper, StaggerContainer, StaggerItem } from "@/components/effects/motion-wrapper";
+import { StaggerContainer, StaggerItem } from "@/components/effects/motion-wrapper";
 import { FloatingOrb } from "@/components/effects/glow-orb";
 import { GradientText } from "@/components/effects/animated-gradient";
 

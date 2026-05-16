@@ -37,3 +37,6 @@ yarn-error.log*
 # Build artifacts
 apps/api/.mypy_cache/
 apps/api/htmlcov/
+
+# Local cleanup backups
+_cleanup_backup/

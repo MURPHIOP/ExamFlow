@@ -47,8 +47,10 @@ export function AnimatedCounter({
   to,
   duration = 2,
 }: CounterProps) {
+  void from;
+  void duration;
   return (
-    <motion.span>
+    <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
       {to}
     </motion.span>
   );
